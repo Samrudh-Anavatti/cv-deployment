@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+.Python
+
+# Build outputs
+dist/
+build/
+.vite/
+*.egg-info/
+
+# Environment
+.env
+.env.local
+.env.production
+local.settings.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Azure Functions
+.python_packages/
+.funcignore
+
+# Temp files
+extract_cv.py
+
+# Logs
+*.log

@@ -1,0 +1,71 @@
+Samrudh Anavatti
+AI Engineer
+London, UK
+samrudh.anavatti@gmail.com
+Portfolio (self-hosted RAG demo): coming soon
+Summary
++44 7417 424 593
+linkedin.com/in/samrudh-anavatti
+https://your-domain.dev
+AI engineer with experience delivering agent-based RAG and automation use cases in production. Consulting back
+ground across the full data life cycle, with strengths in cloud architecture and stakeholder-facing delivery. Comfortable
+owning end-to-end delivery and leading multi-geo teams from discovery and design through implementation, evalua
+tion, and deployment.
+
+Skills
+AI Engineering:
+Cloud & DevOps:
+Data Eng & BI:
+LangChain, RAG architectures, Agentic workflows with LangGraph, React agents,
+Prompt engineering, Retrieval evaluation with LangSmith, Guardrails
+Microsoft Azure, AWS, Kubernetes, Docker, Terraform, CI/CD, Monitoring, Networking,
+Authentication
+Microsoft Fabric, Azure data services, Power BI, Data modelling, ETL/ELT pipelines,
+Data governance
+Languages & Tools: Python, SQL, TypeScript, CSS
+Certifications:
+DP-600 Microsoft Fabric Analytics Engineer, PL-300 Power BI Data Analys
+
+Experience
+Department of Defence (Phoenix Solutions)
+AI Engineer
+London, UK
+Feb 2025– Present
+• Designed a multi-pipeline agentic RAG system with specialised React Agents for query understanding, retrieval,
+and critique-and-generation, orchestrated using LangChain and LangGraph.
+• Implemented AI systems with a microservice Docker architecture, using Ollama as the inference engine and open
+source infrastructure components. Now deployed in production for secure use in an air-gapped environment.
+• Built two cloud-native AI systems on AWS and Azure, using Kubernetes for container orchestration and Ter
+raform/Bicep templates for infrastructure-as-code across storage, compute, and application services.
+• Applied software engineering best practices, including CI/CD, automated testing, and security-focused DevSecOps
+controls, managing cloud and on-prem networking, access control, and authentication.
+Deloitte Australia
+Consultant, Cloud & Data Engineering
+Canberra, Australia
+Nov 2021– Dec 2021; Feb 2023– Jan 2025
+• Built BI and data-engineering solutions for NAB Business and Private Banking, including 6 Power BI dashboards,
+13 Fabric pipelines, and a business-approved data model used for sales, revenue, lead, and risk reporting.
+• Led data-governance and management work for Queensland Investment Corporation, raising critical data risks and
+building a register of 400+ data assets to improve stewardship and visibility across private equity, debt, infrastruc
+ture, and natural capital portfolios.
+• Worked directly with executives and technical teams across five Australian federal government agencies as an Azure
+specialised engineer, to scope, design, and present analytics, reporting, and scalable architecture solutions.
+
+
+Education
+Australian National University (ANU)
+Bachelor of Engineering (Hons)
+• Recipient of the ANU College of Engineering and Computer Science Excellence Scholarship.
+Canberra, Australia
+Jan 2019– Nov 2022
+• Published IEEE conference paper on optimising a shared battery model to reduce carbon emissions, based on
+honours thesis work presented at the IEEE Sustainable Power and Energy Conference (IEEE Xplore).
+• Systems Engineering Tutor: ran laboratories, managed assessments, and created YouTube-based Python Tutorial
+
+
+Other
+Early Technical Experience: Infosys ML intern building an LSTM-based health-bot proof of concept for IT delivery
+failure prediction.
+Volunteering: Taught primary school kids as an English Teacher in Chiayi, Taiwan for 3 months
+Right to work: Eligible to work in the United Kingdom under the Youth Mobility Scheme visa. References available
+upon request

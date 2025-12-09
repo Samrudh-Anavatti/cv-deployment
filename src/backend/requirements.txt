@@ -1,0 +1,9 @@
+azure-functions
+openai
+azure-search-documents
+azure-identity
+azure-storage-blob
+pypdf
+langchain
+langchain-openai
+langchain-community
