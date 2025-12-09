@@ -1,163 +1,174 @@
-# Zaralm-Personal: Simplified Azure RAG - Hybrid Deployment Guide
+# Samrudh Anavatti - Personal Website with SamBot
 
-This guide walks you through deploying your personal RAG application using a hybrid approach (Portal + Scripts).
+A modern personal website featuring an AI-powered RAG chatbot (SamBot) that can answer questions about my professional background, skills, and experience.
 
-## Prerequisites
-- **Azure Subscription**: Active subscription
-- **Azure CLI**: Installed and logged in (`az login`)
-- **Azure Functions Core Tools**: Installed (`func`)
-- **Node.js**: Installed
-- **Python 3.10+**: Installed
+## 🌟 Features
 
-## Step 1: Manual Resource Creation (Azure Portal)
+- **Hero Section**: Professional introduction with contact details and career highlights
+- **Tech Showcase**: Animated display of technologies and skills
+- **SamBot**: RAG-powered AI chatbot for interactive Q&A about my background
+- **Admin Panel**: Secure document management for RAG knowledge base
+- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile
 
-### 1.1 Create Resource Group
-1. Go to [Azure Portal](https://portal.azure.com)
-2. Search for **"Resource groups"** → Click **"Create"**
-3. **Resource group name**: `rg-zaralm-personal`
-4. **Region**: `West Europe`
-5. Click **"Review + Create"** → **"Create"**
+## 🏗️ Architecture
 
-### 1.2 Create Azure OpenAI Service
-1. In the portal, search for **"Azure OpenAI"** → Click **"Create"**
-2. **Resource group**: `rg-zaralm-personal`
-3. **Region**: `West Europe`
-4. **Name**: `ai-zaralm-personal` (or any unique name)
-5. **Pricing tier**: `Standard S0`
-6. Click **"Next"** through the tabs → **"Create"**
-7. **Wait for deployment to complete** (2-3 minutes)
+- **Frontend**: React + TypeScript + Vite
+- **Backend**: Azure Functions (Python)
+- **AI**: Azure OpenAI Service (GPT + Embeddings)
+- **Vector Store**: Azure AI Search
+- **Storage**: Azure Blob Storage
 
-### 1.3 Deploy AI Models
-1. Go to your Azure OpenAI resource → Click **"Model deployments"** → **"Manage Deployments"**
-2. This opens **Azure AI Studio**
-3. Click **"+ Create new deployment"**
+## 🚀 Local Development
 
-**Deploy Chat Model:**
-- **Select a model**: Choose any available chat model (GPT-3.5-Turbo, GPT-4, etc.)
-- **Deployment name**: `chat` (use exactly this name)
-- **Model version**: Latest available
-- **Deployment type**: Standard
-- Click **"Deploy"**
+### Prerequisites
 
-**Deploy Embedding Model:**
-- Click **"+ Create new deployment"** again
-- **Select a model**: `text-embedding-ada-002` or `text-embedding-3-small`
-- **Deployment name**: `embedding` (use exactly this name)
-- **Model version**: Latest available
-- Click **"Deploy"**
+- Node.js 16+
+- Python 3.10+
+- Azure subscription (for backend services)
 
-### 1.4 Get Azure OpenAI Details
-1. Go back to your Azure OpenAI resource in the portal
-2. Click **"Keys and Endpoint"** (left sidebar)
-3. **Copy and save**:
-   - **Endpoint** (e.g., `https://ai-zaralm-personal.openai.azure.com/`)
-   - **Key 1**
+### Frontend Setup
 
-### 1.5 Create Azure AI Search
-1. Search for **"Azure AI Search"** → Click **"Create"**
-2. **Resource group**: `rg-zaralm-personal`
-3. **Service name**: `search-zaralm-personal` (or any unique name)
-4. **Location**: `West Europe`
-5. **Pricing tier**: `Free` (or `Basic` if you need more capacity)
-6. Click **"Review + Create"** → **"Create"**
-7. **Wait for deployment to complete**
-
-### 1.6 Get Azure AI Search Details
-1. Go to your Azure AI Search resource
-2. Click **"Keys"** (left sidebar)
-3. **Copy and save**:
-   - **URL** (e.g., `https://search-zaralm-personal.search.windows.net`)
-   - **Primary admin key**
-
-### 1.7 Create Storage Account
-1. Search for **"Storage accounts"** → Click **"Create"**
-2. **Resource group**: `rg-zaralm-personal`
-3. **Storage account name**: `stzaralmpersonal` (must be globally unique, lowercase, no hyphens)
-4. **Region**: `West Europe`
-5. **Performance**: `Standard`
-6. **Redundancy**: `LRS` (Locally-redundant storage)
-7. Click **"Review + Create"** → **"Create"**
-
-### 1.8 Create Function App
-1. Search for **"Function App"** → Click **"Create"**
-2. **Resource group**: `rg-zaralm-personal`
-3. **Function App name**: `func-zaralm-personal` (must be globally unique)
-4. **Runtime stack**: `Python`
-5. **Version**: `3.10`
-6. **Region**: `West Europe`
-7. **Operating System**: `Linux`
-8. **Plan type**: `Consumption (Serverless)`
-9. Click **"Next: Storage"**
-10. **Storage account**: Select `stzaralmpersonal` (the one you just created)
-11. Click **"Review + Create"** → **"Create"**
-12. **Wait for deployment to complete**
-
-### 1.9 Configure Function App Settings
-1. Go to your Function App resource
-2. Click **"Configuration"** (under Settings in left sidebar)
-3. Click **"+ New application setting"** and add each of these:
-
-| Name | Value |
-|------|-------|
-| `AZURE_OPENAI_ENDPOINT` | Your Azure OpenAI endpoint |
-| `AZURE_OPENAI_API_KEY` | Your Azure OpenAI key |
-| `AZURE_OPENAI_API_VERSION` | `2024-02-01` |
-| `AZURE_SEARCH_ENDPOINT` | Your Azure AI Search endpoint |
-| `AZURE_SEARCH_KEY` | Your Azure AI Search admin key |
-| `AZURE_STORAGE_CONTAINER_NAME` | `documents` |
-
-4. Click **"Save"** at the top
-5. Click **"Continue"** when prompted about restarting
-
-### 1.10 Get Function App Name
-Copy your Function App name (e.g., `func-zaralm-personal`) - you'll need this for deployment.
-
-## Step 2: Automated Deployment (PowerShell Script)
-
-Now run the simplified deployment script:
-
-```powershell
-cd Zaralm-Personal/scripts
-./deploy-manual.ps1
+```bash
+cd src/frontend
+npm install
+cp .env.example .env
+# Edit .env with your backend URL
+npm run dev
 ```
 
-**When prompted, enter:**
-- Your Function App name
-- Your frontend storage account name
+The frontend will be available at `http://localhost:5173`
 
-The script will:
-1. Deploy the backend code to your Function App
-2. Create and deploy the frontend
+### Backend Setup
 
-## Step 3: Update Backend Model Names
+1. Create Azure resources (see deployment section)
+2. Configure environment variables in `src/backend/local.settings.json`:
 
-After deployment, update the model names in `src/backend/config.py` to match what you deployed:
+```json
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "AZURE_OPENAI_ENDPOINT": "your-endpoint",
+    "AZURE_OPENAI_API_KEY": "your-key",
+    "AZURE_OPENAI_API_VERSION": "2024-02-01",
+    "AZURE_SEARCH_ENDPOINT": "your-search-endpoint",
+    "AZURE_SEARCH_KEY": "your-search-key",
+    "AZURE_STORAGE_CONNECTION_STRING": "your-connection-string",
+    "AZURE_STORAGE_CONTAINER_NAME": "documents"
+  }
+}
+```
+
+3. Run the backend:
+
+```bash
+cd src/backend
+python -m venv .venv
+.venv\Scripts\activate  # Windows
+pip install -r requirements.txt
+func start
+```
+
+## 📝 Updating Content
+
+### Profile Information
+
+Edit `src/frontend/src/data/profile.json` to update:
+- Name, title, location
+- Contact information
+- Professional summary
+- Technologies/skills
+- Career highlights
+
+### SamBot Knowledge Base
+
+1. Access admin panel:
+   - Press `Ctrl+Shift+A` on the website
+   - Or navigate to `/admin`
+   - Enter password (default: `admin123`)
+
+2. Upload documents (PDF, TXT, DOC)
+3. Click "Embed" to process documents for RAG
+4. SamBot will use these documents to answer questions
+
+## 🔐 Admin Panel
+
+The admin panel is password-protected and accessible via:
+- Keyboard shortcut: `Ctrl+Shift+A`
+- URL: `/admin`
+- Small settings icon (bottom-right corner)
+
+Default password: `admin123` (change in `.env`)
+
+## 🌐 Azure Deployment
+
+### Backend Deployment
+
+```bash
+cd src/backend
+func azure functionapp publish <your-function-app-name>
+```
+
+### Frontend Deployment
+
+```bash
+cd src/frontend
+npm run build
+# Upload dist/ folder to Azure Static Web Apps or Storage Static Website
+```
+
+See the original [deployment guide](README_DEPLOYMENT.md) for detailed Azure setup instructions.
+
+## 🎨 Customization
+
+### Colors & Theme
+
+Edit CSS variables in `src/frontend/src/index.css`:
+
+```css
+:root {
+  --primary: #3b82f6;
+  --secondary: #8b5cf6;
+  --background: #0f172a;
+  /* ... */
+}
+```
+
+### SamBot Personality
+
+Edit the system prompt in `src/backend/function_app.py`:
 
 ```python
-self.OPENAI_CHAT_MODEL = "chat"  # Or whatever you named your chat deployment
-self.OPENAI_EMBEDDING_MODEL = "embedding"  # Or whatever you named your embedding deployment
+system_message = """You are SamBot, an AI assistant..."""
 ```
 
-Then redeploy the backend:
-```powershell
-cd Zaralm-Personal/scripts
-./deploy-backend.ps1 -FunctionAppName <your-function-app-name>
-```
+## 📦 Tech Stack
 
-## Step 4: Access Your Application
+**Frontend:**
+- React 18
+- TypeScript
+- Vite
+- Framer Motion (animations)
+- React Markdown
 
-Your frontend will be available at the URL shown at the end of deployment (something like `https://web....z6.web.core.windows.net`).
+**Backend:**
+- Azure Functions
+- Python 3.10
+- LangChain
+- Azure OpenAI
+- Azure AI Search
 
-## Troubleshooting
+## 📄 License
 
-- **Function App deployment fails**: Make sure you're using Python 3.10 or 3.11 locally
-- **Models not found**: Verify the deployment names in Azure AI Studio match `config.py`
-- **CORS errors**: The Function App is configured to allow all origins for development
+Personal project - All rights reserved
 
-## Architecture
+## 🤝 Contact
 
-- **Frontend**: React (Vite) on Azure Storage Static Website
-- **Backend**: Python Azure Functions (Linux Consumption Plan)
-- **AI**: Azure OpenAI Service
-- **Vector Store**: Azure AI Search
-- **Document Storage**: Azure Blob Storage
+- Email: samrudh.anavatti@gmail.com
+- LinkedIn: [linkedin.com/in/samrudh-anavatti](https://linkedin.com/in/samrudh-anavatti)
+- Website: https://your-domain.dev
+
+---
+
+**Built with ❤️ using React, Azure Functions, and AI**

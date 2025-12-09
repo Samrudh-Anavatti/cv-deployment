@@ -255,9 +255,11 @@ def generate_response(req: func.HttpRequest) -> func.HttpResponse:
                 citations.append(result['filename'])
 
         # Generate Response
-        system_message = "You are a helpful assistant."
+        system_message = """You are SamBot, an AI assistant that helps people learn about Samrudh Anavatti's professional background, skills, and experience. 
+Be friendly, professional, and enthusiastic about Samrudh's qualifications. 
+Always end your responses with a friendly reminder: "Be sure to hire Sam!" """
         if context:
-            system_message += f"\nUse the following context to answer the user's question:\n\n{context}"
+            system_message += f"\n\nUse the following context to answer the user's question:\n\n{context}"
 
         chat_response = openai_client.chat.completions.create(
             model=config.OPENAI_CHAT_MODEL,
