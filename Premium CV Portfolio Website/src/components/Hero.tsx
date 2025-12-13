@@ -106,7 +106,7 @@ export function Hero() {
             transition={{ delay: 0.2, duration: 0.8 }}
             className="mb-4 text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600"
           >
-            John Anderson
+            Samrudh Anavatti
           </motion.h1>
 
           <motion.p
@@ -115,7 +115,7 @@ export function Hero() {
             transition={{ delay: 0.3, duration: 0.8 }}
             className="text-slate-700"
           >
-            Full Stack Developer & Creative Technologist
+            Software Engineer & AI/ML Enthusiast
           </motion.p>
         </motion.div>
 
@@ -133,18 +133,18 @@ export function Hero() {
                   About Me
                 </h2>
                 <p className="text-slate-700 mb-6">
-                  With over 8 years of experience in software development, I specialize in building modern web
-                  applications that combine beautiful design with powerful functionality. My passion lies in
-                  creating digital experiences that not only look stunning but also solve real-world problems.
+                  I'm a passionate software engineer with expertise in full-stack development, cloud technologies,
+                  and artificial intelligence. Currently pursuing my Master's in Computer Science at the University
+                  of Melbourne, I specialize in building scalable applications and intelligent systems.
                 </p>
                 <p className="text-slate-700 mb-6">
-                  I've worked with startups and enterprises alike, helping them bring their visions to life
-                  through cutting-edge technologies and thoughtful user-centered design. From concept to
-                  deployment, I'm committed to delivering excellence at every stage.
+                  With experience at leading consulting firms like Deloitte, I've delivered impactful solutions
+                  across various domains including data analytics, automation, and enterprise applications. I'm
+                  particularly interested in RAG systems, LLMs, and cloud-native architectures.
                 </p>
                 <p className="text-slate-700">
-                  When I'm not coding, you'll find me exploring new technologies, contributing to open-source
-                  projects, or sharing knowledge with the developer community through writing and speaking.
+                  When I'm not coding, you'll find me exploring the latest in AI/ML, contributing to innovative
+                  projects, or learning new technologies to stay at the cutting edge of software development.
                 </p>
               </div>
             </div>

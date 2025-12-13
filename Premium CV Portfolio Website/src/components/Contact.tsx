@@ -11,21 +11,21 @@ export function Contact() {
     {
       icon: Mail,
       label: 'Email',
-      value: 'john.anderson@example.com',
-      href: 'mailto:john.anderson@example.com',
+      value: 'samrudh.anavatti@gmail.com',
+      href: 'mailto:samrudh.anavatti@gmail.com',
     },
     {
       icon: MapPin,
       label: 'Location',
-      value: 'San Francisco, CA',
+      value: 'Melbourne, Australia',
       href: '#',
     },
   ];
 
   const socialLinks = [
-    { icon: Github, href: 'https://github.com', label: 'GitHub' },
-    { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
-    { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
+    { icon: Github, href: 'https://github.com/samrudh-anavatti', label: 'GitHub' },
+    { icon: Linkedin, href: 'https://linkedin.com/in/samrudh-anavatti', label: 'LinkedIn' },
+    { icon: Twitter, href: 'https://twitter.com/samrudh_anavatti', label: 'Twitter' },
   ];
 
   return (
@@ -115,7 +115,7 @@ export function Contact() {
           className="text-center pt-12 mt-12 border-t border-slate-200"
         >
           <p className="text-slate-500">
-            © 2025 John Anderson. Built with React, TypeScript, and Tailwind CSS.
+            © 2025 Samrudh Anavatti. Built with React, TypeScript, and Vite.
           </p>
         </motion.div>
       </div>

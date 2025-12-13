@@ -9,38 +9,38 @@ export function Education() {
 
   const education = [
     {
-      degree: 'Master of Science in Computer Science',
-      school: 'Stanford University',
-      location: 'Stanford, CA',
-      period: '2014 - 2016',
-      description: 'Specialized in Machine Learning and Artificial Intelligence',
-      highlights: ['GPA: 3.9/4.0', 'Research in Neural Networks', "Dean's List"],
+      degree: 'Master of Computer Science',
+      school: 'University of Melbourne',
+      location: 'Melbourne, Australia',
+      period: '2024 - Present',
+      description: 'Specializing in Artificial Intelligence and Software Engineering',
+      highlights: ['Current Student', 'Focus on AI/ML', 'Cloud Technologies'],
     },
     {
-      degree: 'Bachelor of Science in Software Engineering',
-      school: 'MIT',
-      location: 'Cambridge, MA',
-      period: '2010 - 2014',
-      description: 'Focus on Web Technologies and Software Architecture',
-      highlights: ['Summa Cum Laude', 'Computer Science Society President', 'Published 2 papers'],
+      degree: 'Bachelor of Engineering (Honours) in Computer Science',
+      school: 'RMIT University',
+      location: 'Melbourne, Australia',
+      period: '2020 - 2023',
+      description: 'Comprehensive study in Software Development and Computer Systems',
+      highlights: ['Honours Degree', 'Full-Stack Development', 'Cloud Computing'],
     },
   ];
 
   const certifications = [
     {
-      name: 'AWS Certified Solutions Architect',
+      name: 'Azure Fundamentals',
+      issuer: 'Microsoft',
+      year: '2024',
+    },
+    {
+      name: 'AWS Cloud Practitioner',
       issuer: 'Amazon Web Services',
       year: '2023',
     },
     {
-      name: 'Google Cloud Professional Developer',
-      issuer: 'Google',
-      year: '2022',
-    },
-    {
-      name: 'Professional Scrum Master I',
-      issuer: 'Scrum.org',
-      year: '2021',
+      name: 'Professional Development',
+      issuer: 'Various Platforms',
+      year: '2020-2024',
     },
   ];
 
