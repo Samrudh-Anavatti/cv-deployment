@@ -1,0 +1,58 @@
+SAMRUDH ANAVATTI
+SEEKING CONSULTING, ENGINEERING, AND ADVISORY WORK IN LONDON
++447417424593 samrudh.anavatti@gmail.com www.linkedin.com/in/samrudh-anavatti
+SUMMARY
+As an AI Engineer with consulting experience at Deloitte, I have had a lot of client-facing experience working closely with executives,
+developers, and management. I have consistently had to manage multiple projects and deadlines in fast engagements. My
+undergraduate and honours thesis gave me exposure to the energy, sustainability, and automation space, making me suitable for any
+relevant engineering, IT, or data work. Through project work, I have often had to work in a small team, and proactively take ownership
+of multiple deliverables in parallel. My written and verbal communication skills are very strong, and I have good proficiency with slide
+design on PowerPoint. I also have technical skills in both AWS and Azure, Power BI, Fabric, SQL, and Python, and my familiarity with AI,
+data analysis, data engineering, data visualisation, and machine learning, will greatly help with any technical work.
+I have the right to work in the United Kingdom via the Youth Mobility Scheme Visa
+KEY SKILLS AND AWARDS
+Technical Stack: AWS, Azure, Power BI, Fabric, Microsoft Azure, SQL, Python, Databricks, Java, Matlab, Excel, PowerPoint
+Technical Capability: Data Engineering, Forecasting w/ Machine Learning, Data Visualisation, Generative AI, Data Strategy
+Business Skills: Stakeholder Management, Presentation Skills, Risk Management, Road-mapping, Policy Writing, Slide Designs
+Certifications: DP-600 Microsoft Fabric Analytics Engineer, PL-300 Microsoft Power BI Data Analyst, AWS Introduction Bootcamp
+Awards/Activities: Recipient of ANU College of Engineering and Computer Science Excellence Scholarship
+DEPARTMENT OF DEFENCE (PHOENIX SOLUTIONS) - AI ENGINEER
+Agentic AI RAG Build - Azure Technology Stack
+Feb 2025 - Current
+Building RAG and Agentic capability with a closed data environment, using Ollama hosted on Azure services built to scale for production
+DELOITTE WORK EXPERIENCE
+Financial Reporting & Data Engineering - NAB Australia
+Nov 2021 - Dec 2021 | Feb 2023 - Jan 2025
+Developed 6 Power BI reports, 13 Fabric Pipelines, and a business-approved data model for NAB business and private banking
+Delivered reporting insights on sales, revenue, leads, performance, and risk with branch reports viewed over 400 times
+Data Governance and Management Advisory - Queensland Investment Corporation (QIC)
+Raised over 30 critical data risks across private equity, private debt, infrastructure investment and natural capital
+Created a detailed register of 400+ data assets, to assign stewardship responsibility and improve data visibility across QIC 
+Generative AI Development - Deloitte Data Engineering Asset
+Part of the build team for an internal Microsoft Azure data migration asset, with over $1 million AUD of client sales in 2024
+Automated processes by integrating Azure AI Foundry into the asset, and used Gen-AI to populate the metadata store and transform
+output files, saving 100+ hours for a large migration by removing manual metadata collection
+Data Reporting and Architecture Advisory - 5 Agencies with the Australian Federal Government
+Australian Aged Care Commission: Reduced the report development time by 80%, building Power BI reports with automated data
+ingestion and analytics. To accompany this, built foundational reporting infrastructure with a shared data storage and workspace
+Australian WHS Insurance (Comcare): Developed a governance plan and a data quality framework for a $50 million AUD Salesforce
+implementation on Australia’s primary government insurance agency
+Department of Health: Reduced IT operational expenses by 28%, with a visualisation and analytics tools assessment and strategy
+Australian Energy Regulatory: Designed a Microsoft Azure target state architecture and roadmap to meet all upcoming use cases
+Australian Digital Health Agency: Led two juniors analysts in Power BI to develop and maintain account management dashboards
+ANU ENGINEERING FACULTY MEMBER EXPERIENCE
+Systems Engineering Tutor - 2 courses, 3 semesters 
+Tutored labs and workshops, helped write and mark assessments, made a 
+July 2021 - Nov 2022
+python-based YouTube tutorial series for one of the courses
+EDUCATION
+Bachelor of Engineering, Major in Renewable Energy Systems - at the Australian National University (ANU)
+Jan 2019 - Nov 2022
+Completed relevant course work in Power Electronics, Fluid Mechanics, Grid Integration, Machine Learning, Data Management Security
+Honours thesis presented and published at the IEEE Sustainable Power and Energy Conference, and accessible via IEEE Xplore
+Graduated with Honours 2A (Distinction Average)
+OTHER EXPERIENCE
+Primary School English Teaching Volunteer - Taught kids between the ages of 6-12 years old in Chiayi, Taiwan
+Surf Store Retail Assistant - worked as a cashier at Ozmosis, a popular Australian Surf and Skate store
+Infosys ML Intern - Built a health-bot proof of concept that predicts IT delivery system failures with an accuracy of 70% using an LSTM
+Engineering Students Association - Facilitated 20+ industry and networking events while managing the FB and LinkedIn

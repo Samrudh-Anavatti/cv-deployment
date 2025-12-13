@@ -9,38 +9,31 @@ export function Education() {
 
   const education = [
     {
-      degree: 'Master of Computer Science',
-      school: 'University of Melbourne',
-      location: 'Melbourne, Australia',
-      period: '2024 - Present',
-      description: 'Specializing in Artificial Intelligence and Software Engineering',
-      highlights: ['Current Student', 'Focus on AI/ML', 'Cloud Technologies'],
-    },
-    {
-      degree: 'Bachelor of Engineering (Honours) in Computer Science',
-      school: 'RMIT University',
-      location: 'Melbourne, Australia',
-      period: '2020 - 2023',
-      description: 'Comprehensive study in Software Development and Computer Systems',
-      highlights: ['Honours Degree', 'Full-Stack Development', 'Cloud Computing'],
+      degree: 'Bachelor of Engineering (Honours) in Renewable Energy Systems',
+      school: 'Australian National University (ANU)',
+      location: 'Canberra, Australia',
+      period: 'Jan 2019 - Nov 2022',
+      description: 'Specialized in sustainable energy technologies and systems optimization',
+      highlights: [
+        'ANU College of Engineering & Computer Science Excellence Scholarship',
+        'Published IEEE Conference Paper',
+        'Honours Thesis on Shared Battery Optimization'
+      ],
+      paperLink: 'https://ieeexplore.ieee.org/document/10033018',
+      paperTitle: 'Optimising Shared Energy Storage to Reduce Carbon Emissions'
     },
   ];
 
   const certifications = [
     {
-      name: 'Azure Fundamentals',
+      name: 'Microsoft Certified: Fabric Analytics Engineer Associate',
       issuer: 'Microsoft',
       year: '2024',
     },
     {
-      name: 'AWS Cloud Practitioner',
-      issuer: 'Amazon Web Services',
-      year: '2023',
-    },
-    {
-      name: 'Professional Development',
-      issuer: 'Various Platforms',
-      year: '2020-2024',
+      name: 'Microsoft Certified: Power BI Data Analyst Associate',
+      issuer: 'Microsoft',
+      year: '2024',
     },
   ];
 
@@ -102,6 +95,37 @@ export function Education() {
                       </span>
                     ))}
                   </div>
+
+                  {/* IEEE Paper Link */}
+                  {(edu as any).paperLink && (
+                    <div className="mt-6 pt-6 border-t border-slate-200">
+                      <a
+                        href={(edu as any).paperLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group inline-flex items-center gap-2 text-cyan-600 hover:text-cyan-700 transition-colors"
+                      >
+                        <Book className="w-4 h-4" />
+                        <span className="font-medium">{(edu as any).paperTitle}</span>
+                        <svg
+                          className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                          />
+                        </svg>
+                      </a>
+                      <p className="text-xs text-slate-500 mt-2">
+                        Presented at IEEE Sustainable Power and Energy Conference
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             </motion.div>

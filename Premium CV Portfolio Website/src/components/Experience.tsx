@@ -10,84 +10,84 @@ export function Experience() {
 
   const projects = [
     {
-      title: 'Enterprise Data Analytics Platform',
-      company: 'Current Role - TechCorp',
+      title: 'Air-Gapped Agentic RAG System',
+      company: 'Phoenix Solutions (Department of Defence)',
       description:
-        'Led development of real-time analytics dashboard serving 2M+ users. Implemented microservices architecture with React, Node.js, and AWS.',
-      tech: ['React', 'Node.js', 'AWS', 'PostgreSQL'],
-      impact: '60% faster query performance, 99.9% uptime',
+        'Designed and deployed a multi-pipeline agentic RAG system with specialized React Agents for query understanding, retrieval, and critique-generation. Built with microservice Docker architecture using Ollama as inference engine, orchestrated via LangChain and LangGraph for secure production use in air-gapped environments.',
+      tech: ['LangGraph', 'LangChain', 'Docker', 'Ollama', 'React Agents', 'Microservices'],
+      impact: 'Production deployment in secure environment',
     },
     {
-      title: 'Global E-Commerce Transformation',
+      title: 'AWS Cloud-Native RAG Platform',
+      company: 'Phoenix Solutions (Department of Defence)',
+      description:
+        'Built enterprise RAG system on AWS infrastructure centered around Bedrock for LLM inference. Implemented infrastructure-as-code using Terraform, with comprehensive CI/CD pipelines, automated testing, and DevSecOps controls for cloud networking, access control, and authentication.',
+      tech: ['AWS Bedrock', 'Terraform', 'CI/CD', 'Python', 'DevSecOps'],
+      impact: 'Scalable cloud-native AI platform',
+    },
+    {
+      title: 'Azure Kubernetes RAG Architecture',
+      company: 'Phoenix Solutions (Department of Defence)',
+      description:
+        'Architected Azure-based RAG system with Ollama deployed on Kubernetes for model inference. Leveraged Azure services for storage, compute, and application layer, with Bicep templates for infrastructure automation and container orchestration at scale.',
+      tech: ['Azure', 'Kubernetes', 'Ollama', 'Bicep', 'Docker', 'Azure Services'],
+      impact: 'Enterprise-grade containerized AI system',
+    },
+    {
+      title: 'Automated Quarterly Report Generation',
+      company: 'Phoenix Solutions (Department of Defence)',
+      description:
+        'Developed an intelligent document automation system that ingests 6 data sources and generates fully formatted 50-page quarterly performance reports. Implemented multi-agent processing pipeline with routing, data analysis, and statistical computation capabilities, producing editable Word documents with LLM-driven insights.',
+      tech: ['LangChain', 'Python', 'Multi-Agent Systems', 'Data Analysis', 'NLP'],
+      impact: 'Automated 50-page report generation',
+    },
+    {
+      title: 'NAB Business Banking Analytics Platform',
       company: 'Deloitte',
       description:
-        'Architected and built scalable e-commerce platform for Fortune 500 client. Integrated payment systems, inventory management, and analytics.',
-      tech: ['Next.js', 'TypeScript', 'Stripe', 'MongoDB'],
-      impact: '$5M+ in first-year revenue',
+        'Delivered comprehensive BI and data engineering solution for National Australia Bank Business and Private Banking division. Built 6 Power BI dashboards, 13 Microsoft Fabric pipelines, and a business-approved data model supporting sales, revenue, lead performance, and risk reporting.',
+      tech: ['Power BI', 'Microsoft Fabric', 'Data Modeling', 'ETL', 'SQL'],
+      impact: 'Branch reports viewed 400+ times',
     },
     {
-      title: 'AI-Powered Customer Service Bot',
-      company: 'Current Role - TechCorp',
-      description:
-        'Developed intelligent chatbot using NLP and machine learning to handle customer inquiries. Reduced support ticket volume by 40%.',
-      tech: ['Python', 'TensorFlow', 'React', 'WebSocket'],
-      impact: '40% reduction in support tickets',
-    },
-    {
-      title: 'Financial Reporting Automation',
+      title: 'QIC Data Governance Framework',
       company: 'Deloitte',
       description:
-        'Built automated financial reporting system for multinational corporation. Streamlined data collection from 50+ sources into unified dashboard.',
-      tech: ['Python', 'PowerBI', 'Azure', 'SQL Server'],
-      impact: '85% time savings in report generation',
+        'Led data governance and management advisory for Queensland Investment Corporation. Identified 30+ critical data risks across private equity, debt, infrastructure, and natural capital portfolios. Created comprehensive register of 400+ data assets to establish stewardship responsibility and improve data visibility.',
+      tech: ['Data Governance', 'Risk Management', 'Asset Management', 'Strategy'],
+      impact: '400+ data assets catalogued, 30+ risks identified',
     },
     {
-      title: 'Mobile Banking Application',
+      title: 'Azure Migration Tool with Gen AI',
       company: 'Deloitte',
       description:
-        'Created secure mobile banking app with biometric authentication, real-time transactions, and advanced fraud detection.',
-      tech: ['React Native', 'Node.js', 'AWS', 'Redis'],
-      impact: '500K+ active users',
+        'Core build team member for internal Microsoft Azure data migration asset that generated $1M+ AUD in client sales. Integrated Azure AI Foundry to automate metadata collection and file transformation, reducing manual effort by 100+ hours per large migration through intelligent metadata population.',
+      tech: ['Azure AI Foundry', 'Gen AI', 'Azure', 'Automation', 'Data Migration'],
+      impact: '$1M+ sales, 100+ hours saved per migration',
     },
     {
-      title: 'Supply Chain Optimization Tool',
+      title: 'Comcare Salesforce Governance Strategy',
       company: 'Deloitte',
       description:
-        'Designed logistics optimization platform using AI to predict demand and optimize inventory across global warehouses.',
-      tech: ['Vue.js', 'Python', 'TensorFlow', 'Docker'],
-      impact: '30% reduction in inventory costs',
+        'Developed comprehensive governance plan and data quality framework for Australian WHS Insurance (Comcare) supporting a $50M AUD Salesforce implementation. Designed strategy to ensure data integrity and compliance for Australia\'s primary government insurance agency.',
+      tech: ['Salesforce', 'Data Governance', 'Strategy', 'Data Quality'],
+      impact: '$50M implementation governance',
     },
     {
-      title: 'Internal Collaboration Platform',
-      company: 'Current Role - TechCorp',
-      description:
-        'Built company-wide collaboration tool with real-time messaging, video calls, file sharing, and project management features.',
-      tech: ['React', 'WebRTC', 'GraphQL', 'Kubernetes'],
-      impact: '2000+ daily active users',
-    },
-    {
-      title: 'Healthcare Patient Portal',
+      title: 'Australian Energy Regulator Cloud Architecture',
       company: 'Deloitte',
       description:
-        'Developed HIPAA-compliant patient portal enabling secure communication, appointment scheduling, and medical record access.',
-      tech: ['Angular', 'Java', 'PostgreSQL', 'AWS'],
-      impact: 'Serves 100K+ patients',
+        'Designed Microsoft Azure target state architecture and implementation roadmap for the Australian Energy Regulator. Created scalable cloud strategy to support all upcoming regulatory use cases with focus on analytics, reporting, and data management capabilities.',
+      tech: ['Azure Architecture', 'Cloud Strategy', 'Roadmapping', 'Enterprise Design'],
+      impact: 'Enterprise cloud transformation roadmap',
     },
     {
-      title: 'DevOps CI/CD Pipeline',
-      company: 'Current Role - TechCorp',
-      description:
-        'Implemented comprehensive CI/CD pipeline with automated testing, deployment, and monitoring. Reduced deployment time from hours to minutes.',
-      tech: ['Jenkins', 'Docker', 'Kubernetes', 'Terraform'],
-      impact: '80% faster deployments',
-    },
-    {
-      title: 'Marketing Automation Platform',
+      title: 'Aged Care Commission Reporting Infrastructure',
       company: 'Deloitte',
       description:
-        'Created marketing automation suite with email campaigns, A/B testing, analytics, and customer segmentation capabilities.',
-      tech: ['React', 'Node.js', 'MongoDB', 'SendGrid'],
-      impact: '200% increase in campaign ROI',
+        'Reduced report development time by 80% for Australian Aged Care Commission through Power BI automation with intelligent data ingestion and analytics. Built foundational reporting infrastructure including shared data storage and collaborative workspace environment.',
+      tech: ['Power BI', 'Data Automation', 'Azure', 'Analytics', 'Infrastructure'],
+      impact: '80% reduction in development time',
     },
   ];
 

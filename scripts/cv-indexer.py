@@ -8,6 +8,34 @@ import requests
 import sys
 import os
 
+def cleanup_permanent_documents(backend_url):
+    """Delete all permanent documents from the index before re-indexing"""
+    print("Step 0: Cleaning up old CV documents...")
+    
+    cleanup_payload = {
+        "sessionId": "global",
+        "documentType": "permanent"
+    }
+    
+    try:
+        cleanup_response = requests.post(
+            f"{backend_url}/api/cleanup",
+            json=cleanup_payload
+        )
+        
+        if cleanup_response.status_code == 200:
+            result = cleanup_response.json()
+            deleted_count = result.get('deletedCount', 0)
+            print(f"✓ Cleaned up {deleted_count} old CV document(s)")
+        else:
+            print(f"⚠ Cleanup returned status {cleanup_response.status_code}")
+            print("  Continuing with indexing anyway...")
+    except Exception as e:
+        print(f"⚠ Cleanup failed: {e}")
+        print("  Continuing with indexing anyway...")
+    
+    print()
+
 def index_cv(backend_url, cv_file_path):
     """Upload and index the CV document"""
     
@@ -19,6 +47,9 @@ def index_cv(backend_url, cv_file_path):
     if not os.path.exists(cv_file_path):
         print(f"ERROR: CV file not found: {cv_file_path}")
         return False
+    
+    # Step 0: Clean up old CV documents
+    cleanup_permanent_documents(backend_url)
     
     # Step 1: Upload CV to blob storage
     print("Step 1: Uploading CV to blob storage...")

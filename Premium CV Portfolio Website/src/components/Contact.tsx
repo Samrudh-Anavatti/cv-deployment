@@ -17,7 +17,7 @@ export function Contact() {
     {
       icon: MapPin,
       label: 'Location',
-      value: 'Melbourne, Australia',
+      value: 'London, United Kingdom',
       href: '#',
     },
   ];

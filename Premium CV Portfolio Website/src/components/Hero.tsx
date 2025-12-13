@@ -134,8 +134,8 @@ export function Hero() {
                 </h2>
                 <p className="text-slate-700 mb-6">
                   I'm a passionate software engineer with expertise in full-stack development, cloud technologies,
-                  and artificial intelligence. Currently pursuing my Master's in Computer Science at the University
-                  of Melbourne, I specialize in building scalable applications and intelligent systems.
+                  and artificial intelligence. With a background in Renewable Energy Systems from ANU, I bring a
+                  unique perspective to building scalable applications and intelligent systems.
                 </p>
                 <p className="text-slate-700 mb-6">
                   With experience at leading consulting firms like Deloitte, I've delivered impactful solutions
