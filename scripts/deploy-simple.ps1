@@ -82,17 +82,24 @@ Write-Host "  Function App: $functionAppName"
 Write-Host "  Frontend Storage: $frontendStorageName"
 Write-Host "  Frontend URL: $frontendUrl"
 
-# Configure API keys
+# Configure API keys and endpoints
 Write-Host ""
-Write-Host "=== STEP 3: Configure API Keys ===" -ForegroundColor Green
+Write-Host "=== STEP 3: Configure Environment Variables ===" -ForegroundColor Green
+
+# Get storage connection string
+$storageConnStr = az storage account show-connection-string --name stzaralmpersonal --resource-group $ResourceGroup --query connectionString --output tsv
+
 az functionapp config appsettings set `
     --name $functionAppName `
     --resource-group $ResourceGroup `
     --settings `
+        "AZURE_OPENAI_ENDPOINT=$aiEndpoint" `
         "AZURE_OPENAI_API_KEY=$aiKey" `
-        "AZURE_SEARCH_KEY=$searchKey"
+        "AZURE_SEARCH_ENDPOINT=$searchEndpoint" `
+        "AZURE_SEARCH_KEY=$searchKey" `
+        "AZURE_STORAGE_CONNECTION_STRING=$storageConnStr"
 
-Write-Host "API keys configured successfully!" -ForegroundColor Green
+Write-Host "Environment variables configured successfully!" -ForegroundColor Green
 
 # Deploy Backend
 Write-Host ""
@@ -107,16 +114,13 @@ Pop-Location
 # Deploy Frontend
 Write-Host ""
 Write-Host "=== STEP 5: Deploy Frontend ===" -ForegroundColor Green
-Push-Location "../src/frontend"
+Push-Location "../Premium CV Portfolio Website"
 
 # Create .env for build
 $envContent = @"
-REACT_APP_AZURE_FUNCTIONS_URL=https://$functionAppName.azurewebsites.net
-REACT_APP_AZURE_DOCPROC_URL=https://$functionAppName.azurewebsites.net
-REACT_APP_AZURE_EMBEDDING_URL=https://$functionAppName.azurewebsites.net
-REACT_APP_ENVIRONMENT=$Environment
+VITE_BACKEND_URL=https://$functionAppName.azurewebsites.net
 "@
-$envContent | Out-File ".env.production" -Encoding UTF8
+$envContent | Out-File ".env" -Encoding UTF8
 
 # Install & Build
 npm install
@@ -125,8 +129,18 @@ npm run build
 # Upload to Blob
 $storageKey = az storage account keys list --resource-group $ResourceGroup --account-name $frontendStorageName --query '[0].value' --output tsv
 az storage blob service-properties update --account-name $frontendStorageName --account-key $storageKey --static-website --index-document "index.html" --404-document "index.html"
-az storage blob upload-batch --account-name $frontendStorageName --account-key $storageKey --destination "`$web" --source "dist" --overwrite
+az storage blob upload-batch --account-name $frontendStorageName --account-key $storageKey --destination "`$web" --source "build" --overwrite
 
+Pop-Location
+
+# Index CV
+Write-Host ""
+Write-Host "=== STEP 6: Index CV Document ===" -ForegroundColor Green
+Write-Host "Waiting for backend to be fully ready..." -ForegroundColor Yellow
+Start-Sleep -Seconds 30
+
+Push-Location $PSScriptRoot
+python cv-indexer.py "https://$functionAppName.azurewebsites.net"
 Pop-Location
 
 Write-Host ""
@@ -137,6 +151,7 @@ Write-Host ""
 Write-Host "Access your app at: $frontendUrl" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Next steps:" -ForegroundColor Yellow
-Write-Host "1. Verify your AI model deployment names match 'chat' and 'embedding'"
-Write-Host "2. Update src/backend/config.py if needed"
-Write-Host "3. Test your application!"
+Write-Host "1. Test SamBot by asking about Samrudh's background"
+Write-Host "2. Try uploading a document to test RAG"
+Write-Host "3. Verify session isolation works"
+

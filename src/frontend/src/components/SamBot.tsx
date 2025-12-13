@@ -21,7 +21,7 @@ export function SamBot() {
     const [enableRag, setEnableRag] = useState(true);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:7071';
+    const backendUrl = 'https://zaralmpersonal-func-dev.azurewebsites.net';
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

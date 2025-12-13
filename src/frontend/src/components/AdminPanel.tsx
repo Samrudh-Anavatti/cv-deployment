@@ -13,8 +13,8 @@ export function AdminPanel() {
     const [isUploading, setIsUploading] = useState(false);
     const [embeddingDoc, setEmbeddingDoc] = useState<string | null>(null);
 
-    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:7071';
-    const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'admin123';
+    const backendUrl = 'https://zaralmpersonal-func-dev.azurewebsites.net';
+    const adminPassword = 'admin123';
 
     useEffect(() => {
         if (isAuthenticated) {

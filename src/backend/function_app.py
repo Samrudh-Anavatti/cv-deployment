@@ -49,28 +49,46 @@ def create_index_if_not_exists(index_name="documents"):
         HnswAlgorithmConfiguration,
         VectorSearchProfile
     )
-    client = get_search_index_client()
-    if index_name not in client.list_index_names():
-        fields = [
-            SimpleField(name="id", type=SearchFieldDataType.String, key=True),
-            SimpleField(name="filename", type=SearchFieldDataType.String, filterable=True),
-            SearchField(name="content", type=SearchFieldDataType.String, searchable=True),
-            SearchField(
-                name="contentVector",
-                type=SearchFieldDataType.Collection(SearchFieldDataType.Single),
-                searchable=True,
-                vector_search_dimensions=1536,
-                vector_search_profile_name="my-vector-profile"
+    try:
+        client = get_search_index_client()
+        existing_indexes = list(client.list_index_names())
+        logging.info(f"Existing indexes: {existing_indexes}")
+        
+        if index_name not in existing_indexes:
+            logging.info(f"Creating index '{index_name}'...")
+            fields = [
+                SimpleField(name="id", type=SearchFieldDataType.String, key=True),
+                SimpleField(name="filename", type=SearchFieldDataType.String, filterable=True),
+                SearchField(name="content", type=SearchFieldDataType.String, searchable=True),
+                SearchField(
+                    name="contentVector",
+                    type=SearchFieldDataType.Collection(SearchFieldDataType.Single),
+                    searchable=True,
+                    vector_search_dimensions=1536,
+                    vector_search_profile_name="my-vector-profile"
+                ),
+                # Session-based isolation fields
+                SimpleField(name="sessionId", type=SearchFieldDataType.String, filterable=True),
+                SimpleField(name="documentType", type=SearchFieldDataType.String, filterable=True),
+                SimpleField(name="uploadTimestamp", type=SearchFieldDataType.String, filterable=True)
+            ]
+            
+            vector_search = VectorSearch(
+                algorithms=[HnswAlgorithmConfiguration(name="my-hnsw")],
+                profiles=[VectorSearchProfile(name="my-vector-profile", algorithm_configuration_name="my-hnsw")]
             )
-        ]
-        
-        vector_search = VectorSearch(
-            algorithms=[HnswAlgorithmConfiguration(name="my-hnsw")],
-            profiles=[VectorSearchProfile(name="my-vector-profile", algorithm_configuration_name="my-hnsw")]
-        )
-        
-        index = SearchIndex(name=index_name, fields=fields, vector_search=vector_search)
-        client.create_index(index)
+            
+            index = SearchIndex(name=index_name, fields=fields, vector_search=vector_search)
+            client.create_index(index)
+            logging.info(f"✓ Created search index '{index_name}' with session isolation support")
+        else:
+            logging.info(f"Index '{index_name}' already exists")
+    except Exception as e:
+        logging.error(f"Failed to create index: {str(e)}")
+        logging.error(f"Error type: {type(e).__name__}")
+        import traceback
+        logging.error(f"Traceback: {traceback.format_exc()}")
+        raise  # Re-raise to let caller handle it
 
 # Document Management Functions
 @app.route(route="documents/upload", methods=["POST"], auth_level=func.AuthLevel.ANONYMOUS)
@@ -141,12 +159,15 @@ def delete_document(req: func.HttpRequest) -> func.HttpResponse:
 def embed_document(req: func.HttpRequest) -> func.HttpResponse:
     import io
     import pypdf
-    from langchain.text_splitter import RecursiveCharacterTextSplitter
+    from langchain_text_splitters import RecursiveCharacterTextSplitter
+    from datetime import datetime
     from config import config
     
     try:
         req_body = req.get_json()
         filename = req_body.get('fileName')
+        session_id = req_body.get('sessionId', 'global')  # Default to 'global' for CV
+        document_type = req_body.get('documentType', 'permanent')  # Default to 'permanent' for CV
         
         if not filename:
             return func.HttpResponse("FileName required", status_code=400)
@@ -180,6 +201,7 @@ def embed_document(req: func.HttpRequest) -> func.HttpResponse:
         create_index_if_not_exists()
         search_client = get_search_client()
         
+        upload_timestamp = datetime.utcnow().isoformat()
         documents_to_index = []
         for i, chunk in enumerate(chunks):
             response = openai_client.embeddings.create(
@@ -189,10 +211,13 @@ def embed_document(req: func.HttpRequest) -> func.HttpResponse:
             embedding = response.data[0].embedding
             
             doc = {
-                "id": f"{filename}-{i}".replace(".", "_").replace(" ", "_"),
+                "id": f"{session_id}-{filename}-{i}".replace(".", "_").replace(" ", "_").replace("/", "_").replace("(", "").replace(")", "").replace("[", "").replace("]", ""),
                 "filename": filename,
                 "content": chunk,
-                "contentVector": embedding
+                "contentVector": embedding,
+                "sessionId": session_id,
+                "documentType": document_type,
+                "uploadTimestamp": upload_timestamp
             }
             documents_to_index.append(doc)
             
@@ -203,14 +228,23 @@ def embed_document(req: func.HttpRequest) -> func.HttpResponse:
         if documents_to_index:
             search_client.upload_documents(documents=documents_to_index)
 
+        logging.info(f"Embedded {len(chunks)} chunks for {filename} (type: {document_type}, session: {session_id})")
         return func.HttpResponse(
             json.dumps({"message": "Embedded successfully", "chunks": len(chunks)}),
             mimetype="application/json"
         )
 
+
     except Exception as e:
-        logging.error(f"Embedding error: {e}")
-        return func.HttpResponse(str(e), status_code=500)
+        logging.error(f"Embedding error: {str(e)}")
+        logging.error(f"Error type: {type(e).__name__}")
+        import traceback
+        logging.error(f"Traceback: {traceback.format_exc()}")
+        return func.HttpResponse(
+            json.dumps({"error": str(e), "type": type(e).__name__}),
+            status_code=500,
+            mimetype="application/json"
+        )
 
 # Chat Function
 @app.route(route="generate", methods=["POST"], auth_level=func.AuthLevel.ANONYMOUS)
@@ -222,6 +256,7 @@ def generate_response(req: func.HttpRequest) -> func.HttpResponse:
         req_body = req.get_json()
         prompt = req_body.get('prompt')
         enable_rag = req_body.get('enableRag', True)
+        session_id = req_body.get('sessionId', 'global')  # User's session ID
         
         if not prompt:
             return func.HttpResponse("Prompt required", status_code=400)
@@ -231,28 +266,39 @@ def generate_response(req: func.HttpRequest) -> func.HttpResponse:
         citations = []
 
         if enable_rag:
-            # Embed Query
-            emb_response = openai_client.embeddings.create(
-                input=prompt,
-                model=config.OPENAI_EMBEDDING_MODEL
-            )
-            query_vector = emb_response.data[0].embedding
+            try:
+                # Embed Query
+                emb_response = openai_client.embeddings.create(
+                    input=prompt,
+                    model=config.OPENAI_EMBEDDING_MODEL
+                )
+                query_vector = emb_response.data[0].embedding
 
-            # Search
-            search_client = get_search_client()
-            vector_query = VectorizedQuery(vector=query_vector, k_nearest_neighbors=3, fields="contentVector")
-            
-            results = search_client.search(
-                search_text=prompt,
-                vector_queries=[vector_query],
-                select=["content", "filename"],
-                top=3
-            )
+                # Search with session filtering - only retrieve CV (permanent) + user's own documents
+                search_client = get_search_client()
+                vector_query = VectorizedQuery(vector=query_vector, k_nearest_neighbors=5, fields="contentVector")
+                
+                # Filter: (sessionId eq 'user_session' OR documentType eq 'permanent')
+                filter_query = f"sessionId eq '{session_id}' or documentType eq 'permanent'"
+                
+                results = search_client.search(
+                    search_text=prompt,
+                    vector_queries=[vector_query],
+                    filter=filter_query,
+                    select=["content", "filename", "documentType"],
+                    top=5
+                )
 
-            # Construct Context
-            for result in results:
-                context += f"Source: {result['filename']}\nContent: {result['content']}\n\n"
-                citations.append(result['filename'])
+                # Construct Context
+                for result in results:
+                    context += f"Source: {result['filename']}\nContent: {result['content']}\n\n"
+                    citations.append(result['filename'])
+                    
+                logging.info(f"RAG search returned {len(citations)} results for session {session_id}")
+            except Exception as search_error:
+                logging.warning(f"RAG search failed (index may not exist): {search_error}")
+                # Continue without RAG if search fails
+                enable_rag = False
 
         # Generate Response
         system_message = """You are SamBot, an AI assistant that helps people learn about Samrudh Anavatti's professional background, skills, and experience. 
@@ -282,4 +328,87 @@ Always end your responses with a friendly reminder: "Be sure to hire Sam!" """
 
     except Exception as e:
         logging.error(f"Chat error: {e}")
-        return func.HttpResponse(str(e), status_code=500)
+        import traceback
+        logging.error(f"Traceback: {traceback.format_exc()}")
+        return func.HttpResponse(
+            json.dumps({"error": str(e), "success": False}),
+            status_code=500,
+            mimetype="application/json"
+        )
+
+# Cleanup Functions
+@app.route(route="cleanup/session", methods=["POST"], auth_level=func.AuthLevel.ANONYMOUS)
+def cleanup_session(req: func.HttpRequest) -> func.HttpResponse:
+    """Delete all temporary documents for a specific session (called on page unload)"""
+    try:
+        req_body = req.get_json()
+        session_id = req_body.get('sessionId')
+        
+        if not session_id or session_id == 'global':
+            return func.HttpResponse(
+                json.dumps({"error": "Invalid sessionId"}),
+                status_code=400,
+                mimetype="application/json"
+            )
+        
+        search_client = get_search_client()
+        
+        # Find all documents for this session
+        filter_query = f"sessionId eq '{session_id}' and documentType eq 'temporary'"
+        results = search_client.search(
+            search_text="*",
+            filter=filter_query,
+            select=["id"]
+        )
+        
+        # Delete documents
+        doc_ids = [result['id'] for result in results]
+        if doc_ids:
+            documents_to_delete = [{"id": doc_id} for doc_id in doc_ids]
+            search_client.delete_documents(documents=documents_to_delete)
+            logging.info(f"Cleaned up {len(doc_ids)} documents for session {session_id}")
+        
+        return func.HttpResponse(
+            json.dumps({"message": f"Cleaned up {len(doc_ids)} documents", "count": len(doc_ids)}),
+            mimetype="application/json"
+        )
+    except Exception as e:
+        logging.error(f"Session cleanup error: {e}")
+        return func.HttpResponse(
+            json.dumps({"error": str(e)}),
+            status_code=500,
+            mimetype="application/json"
+        )
+
+@app.timer_trigger(schedule="0 */30 * * * *", arg_name="timer", run_on_startup=False)
+def cleanup_timer(timer: func.TimerRequest) -> None:
+    """Automated cleanup of temporary documents older than 2 hours (runs every 30 minutes)"""
+    from datetime import datetime, timedelta
+    
+    try:
+        search_client = get_search_client()
+        
+        # Calculate cutoff time (2 hours ago)
+        cutoff_time = (datetime.utcnow() - timedelta(hours=2)).isoformat()
+        
+        # Find old temporary documents
+        filter_query = f"documentType eq 'temporary' and uploadTimestamp lt '{cutoff_time}'"
+        results = search_client.search(
+            search_text="*",
+            filter=filter_query,
+            select=["id", "sessionId", "uploadTimestamp"]
+        )
+        
+        # Delete documents
+        doc_ids = [result['id'] for result in results]
+        if doc_ids:
+            documents_to_delete = [{"id": doc_id} for doc_id in doc_ids]
+            search_client.delete_documents(documents=documents_to_delete)
+            logging.info(f"Timer cleanup: Removed {len(doc_ids)} old temporary documents")
+        else:
+            logging.info("Timer cleanup: No old documents to remove")
+            
+    except Exception as e:
+        logging.error(f"Timer cleanup error: {e}")
+        import traceback
+        logging.error(f"Traceback: {traceback.format_exc()}")
