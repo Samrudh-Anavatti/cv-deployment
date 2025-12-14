@@ -380,6 +380,58 @@ def cleanup_session(req: func.HttpRequest) -> func.HttpResponse:
             mimetype="application/json"
         )
 
+@app.route(route="cleanup", methods=["POST"], auth_level=func.AuthLevel.ANONYMOUS)
+def cleanup_documents(req: func.HttpRequest) -> func.HttpResponse:
+    """General cleanup endpoint - delete documents by sessionId and/or documentType"""
+    try:
+        req_body = req.get_json()
+        session_id = req_body.get('sessionId')
+        document_type = req_body.get('documentType')
+        
+        if not session_id and not document_type:
+            return func.HttpResponse(
+                json.dumps({"error": "Must provide sessionId and/or documentType"}),
+                status_code=400,
+                mimetype="application/json"
+            )
+        
+        search_client = get_search_client()
+        
+        # Build filter query
+        filters = []
+        if session_id:
+            filters.append(f"sessionId eq '{session_id}'")
+        if document_type:
+            filters.append(f"documentType eq '{document_type}'")
+        
+        filter_query = " and ".join(filters)
+        
+        # Find matching documents
+        results = search_client.search(
+            search_text="*",
+            filter=filter_query,
+            select=["id"]
+        )
+        
+        # Delete documents
+        doc_ids = [result['id'] for result in results]
+        if doc_ids:
+            documents_to_delete = [{"id": doc_id} for doc_id in doc_ids]
+            search_client.delete_documents(documents=documents_to_delete)
+            logging.info(f"Cleaned up {len(doc_ids)} documents (filter: {filter_query})")
+        
+        return func.HttpResponse(
+            json.dumps({"message": f"Cleaned up {len(doc_ids)} documents", "deletedCount": len(doc_ids)}),
+            mimetype="application/json"
+        )
+    except Exception as e:
+        logging.error(f"Cleanup error: {e}")
+        return func.HttpResponse(
+            json.dumps({"error": str(e)}),
+            status_code=500,
+            mimetype="application/json"
+        )
+
 @app.timer_trigger(schedule="0 */30 * * * *", arg_name="timer", run_on_startup=False)
 def cleanup_timer(timer: func.TimerRequest) -> None:
     """Automated cleanup of temporary documents older than 2 hours (runs every 30 minutes)"""
