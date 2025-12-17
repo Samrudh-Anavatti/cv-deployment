@@ -36,11 +36,11 @@ export function Navigation({ activeSection }: NavigationProps) {
           {/* Logo */}
           <motion.button
             onClick={() => scrollToSection('hero')}
-            className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500"
+            className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 font-semibold text-lg"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            Portfolio
+            Samrudh Anavatti
           </motion.button>
 
           {/* Desktop Navigation */}
@@ -49,9 +49,8 @@ export function Navigation({ activeSection }: NavigationProps) {
               <motion.button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`relative transition-colors ${
-                  activeSection === item.id ? 'text-cyan-600' : 'text-slate-600 hover:text-slate-900'
-                }`}
+                className={`relative transition-colors ${activeSection === item.id ? 'text-cyan-600' : 'text-slate-600 hover:text-slate-900'
+                  }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -87,11 +86,10 @@ export function Navigation({ activeSection }: NavigationProps) {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`block w-full text-left px-4 py-2 rounded-lg transition-colors ${
-                  activeSection === item.id
+                className={`block w-full text-left px-4 py-2 rounded-lg transition-colors ${activeSection === item.id
                     ? 'bg-cyan-50 text-cyan-600'
                     : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                }`}
+                  }`}
               >
                 {item.label}
               </button>

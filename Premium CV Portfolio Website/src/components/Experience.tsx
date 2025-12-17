@@ -105,7 +105,7 @@ export function Experience() {
           </h2>
           <div className="w-20 h-1 mx-auto bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full" />
           <p className="mt-6 text-slate-600 max-w-2xl mx-auto">
-            A selection of impactful projects delivered at Deloitte and my current role at TechCorp
+            A selection of impactful projects delivered at Deloitte and Phoenix Solutions
           </p>
         </motion.div>
 

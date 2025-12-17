@@ -54,27 +54,51 @@ az group create --name $ResourceGroup --location $Location
 # Deploy Infrastructure
 Write-Host ""
 Write-Host "=== STEP 2: Deploy Infrastructure ===" -ForegroundColor Green
-$deploymentName = "zaralm-deploy-$(Get-Date -Format 'yyyyMMdd-HHmm')"
-$infraDeployment = az deployment group create `
-    --name $deploymentName `
-    --resource-group $ResourceGroup `
-    --template-file "../infra/simple-main.bicep" `
-    --parameters `
-        appName=$AppName `
-        environment=$Environment `
-        location=$Location `
-        aiEndpoint=$aiEndpoint `
-        searchEndpoint=$searchEndpoint `
-    --output json | ConvertFrom-Json
 
-if (!$infraDeployment -or $infraDeployment.properties.provisioningState -ne "Succeeded") {
-    Write-Error "Infrastructure deployment failed. Please check the errors above."
-    exit 1
+# Check if Function App already exists
+$functionAppName = "$AppName-func-$Environment"
+$existingApp = $null
+try {
+    $existingApp = az functionapp show --name $functionAppName --resource-group $ResourceGroup 2>&1 | ConvertFrom-Json
+    if ($existingApp.error) {
+        $existingApp = $null
+    }
+} catch {
+    $existingApp = $null
 }
 
-$functionAppName = $infraDeployment.properties.outputs.functionAppName.value
-$frontendStorageName = $infraDeployment.properties.outputs.frontendStorageName.value
-$frontendUrl = $infraDeployment.properties.outputs.frontendUrl.value
+if ($existingApp) {
+    Write-Host "Function App '$functionAppName' already exists. Skipping infrastructure deployment." -ForegroundColor Yellow
+    Write-Host "Using existing resources..." -ForegroundColor Yellow
+    
+    # Get existing storage account name - select first match only
+    $storageAccountName = (az storage account list --resource-group $ResourceGroup --query "[?contains(name, 'st$($AppName.Replace('-',''))')].name | [0]" -o tsv)
+    $frontendStorageName = (az storage account list --resource-group $ResourceGroup --query "[?starts_with(name, 'web')].name | [0]" -o tsv)
+} else {
+    Write-Host "Deploying new infrastructure..." -ForegroundColor Yellow
+    $deploymentName = "zaralm-deploy-$(Get-Date -Format 'yyyyMMdd-HHmm')"
+    $infraDeployment = az deployment group create `
+        --name $deploymentName `
+        --resource-group $ResourceGroup `
+        --template-file "../infra/simple-main.bicep" `
+        --parameters `
+            appName=$AppName `
+            environment=$Environment `
+            location=$Location `
+            aiEndpoint=$aiEndpoint `
+            searchEndpoint=$searchEndpoint `
+        --mode Incremental `
+        --output json | ConvertFrom-Json
+
+    if (!$infraDeployment -or $infraDeployment.properties.provisioningState -ne "Succeeded") {
+        Write-Error "Infrastructure deployment failed. Please check the errors above."
+        exit 1
+    }
+
+    $functionAppName = $infraDeployment.properties.outputs.functionAppName.value
+    $frontendStorageName = $infraDeployment.properties.outputs.frontendStorageName.value
+    $frontendUrl = $infraDeployment.properties.outputs.frontendUrl.value
+}
 
 Write-Host ""
 Write-Host "Infrastructure Deployed:" -ForegroundColor Green
@@ -127,9 +151,9 @@ npm install
 npm run build
 
 # Upload to Blob
-$storageKey = az storage account keys list --resource-group $ResourceGroup --account-name $frontendStorageName --query '[0].value' --output tsv
-az storage blob service-properties update --account-name $frontendStorageName --account-key $storageKey --static-website --index-document "index.html" --404-document "index.html"
-az storage blob upload-batch --account-name $frontendStorageName --account-key $storageKey --destination "`$web" --source "build" --overwrite
+$storageKey = (az storage account keys list --resource-group $ResourceGroup --account-name $frontendStorageName --query '[0].value' --output tsv)
+az storage blob service-properties update --account-name $frontendStorageName --account-key "$storageKey" --static-website --index-document "index.html" --404-document "index.html"
+az storage blob upload-batch --account-name $frontendStorageName --account-key "$storageKey" --destination "`$web" --source "build" --overwrite
 
 Pop-Location
 

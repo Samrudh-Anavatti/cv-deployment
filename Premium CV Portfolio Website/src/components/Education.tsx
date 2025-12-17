@@ -138,7 +138,7 @@ export function Education() {
           transition={{ duration: 0.6, delay: 0.4 }}
         >
           <h3 className="mb-8 text-center text-slate-700">Certifications</h3>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {certifications.map((cert, index) => (
               <motion.div
                 key={index}

@@ -4,6 +4,52 @@ import { useInView } from 'motion/react';
 import { Send, Bot, User, Upload, X } from 'lucide-react';
 import { RAGDiagram } from './RAGDiagram';
 
+// Simple markdown renderer for bot messages
+function renderMarkdown(text: string) {
+  // Split by numbered lists first
+  const parts = text.split(/(\d+\.\s+\*\*[^*]+\*\*)/g);
+
+  return parts.map((part, index) => {
+    // Handle numbered list items with bold
+    if (/^\d+\.\s+\*\*/.test(part)) {
+      const match = part.match(/^(\d+)\.\s+\*\*([^*]+)\*\*/);
+      if (match) {
+        const [, number, boldText] = match;
+        return (
+          <div key={index} className="mb-3">
+            <span className="font-semibold text-slate-900">
+              {number}. {boldText}
+            </span>
+          </div>
+        );
+      }
+    }
+
+    // Handle inline bold text
+    const boldParts = part.split(/(\*\*[^*]+\*\*)/g);
+    return (
+      <span key={index}>
+        {boldParts.map((segment, i) => {
+          if (segment.startsWith('**') && segment.endsWith('**')) {
+            return (
+              <strong key={i} className="font-semibold text-slate-900">
+                {segment.slice(2, -2)}
+              </strong>
+            );
+          }
+          // Preserve line breaks
+          return segment.split('\n').map((line, j) => (
+            <span key={`${i}-${j}`}>
+              {line}
+              {j < segment.split('\n').length - 1 && <br />}
+            </span>
+          ));
+        })}
+      </span>
+    );
+  });
+}
+
 interface Message {
   id: string;
   text: string;
@@ -33,14 +79,23 @@ export function SamBot({ sessionId, backendUrl }: SamBotProps) {
   const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // Scroll only within the chat container, not the entire page
+    if (chatContainerRef.current && messagesEndRef.current) {
+      const container = chatContainerRef.current;
+      const target = messagesEndRef.current;
+      container.scrollTop = target.offsetTop;
+    }
   };
 
   useEffect(() => {
-    scrollToBottom();
+    // Only auto-scroll if there are messages (prevents initial scroll on page load)
+    if (messages.length > 0) {
+      scrollToBottom();
+    }
   }, [messages]);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -246,7 +301,7 @@ export function SamBot({ sessionId, backendUrl }: SamBotProps) {
             </div>
 
             {/* Messages */}
-            <div className="h-[400px] overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-white to-slate-50/30">
+            <div ref={chatContainerRef} className="h-[400px] overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-white to-slate-50/30">
               {messages.map((message) => (
                 <motion.div
                   key={message.id}
@@ -257,8 +312,8 @@ export function SamBot({ sessionId, backendUrl }: SamBotProps) {
                 >
                   <div
                     className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${message.sender === 'bot'
-                        ? 'bg-gradient-to-r from-cyan-500 to-purple-500'
-                        : 'bg-slate-300'
+                      ? 'bg-gradient-to-r from-cyan-500 to-purple-500'
+                      : 'bg-slate-300'
                       }`}
                   >
                     {message.sender === 'bot' ? (
@@ -269,11 +324,11 @@ export function SamBot({ sessionId, backendUrl }: SamBotProps) {
                   </div>
                   <div
                     className={`flex-1 max-w-[80%] px-4 py-3 rounded-2xl ${message.sender === 'bot'
-                        ? 'bg-slate-100 text-slate-800'
-                        : 'bg-gradient-to-r from-cyan-50 to-purple-50 text-slate-900 border border-cyan-100'
+                      ? 'bg-slate-100 text-slate-800'
+                      : 'bg-gradient-to-r from-cyan-50 to-purple-50 text-slate-900 border border-cyan-100'
                       }`}
                   >
-                    <p className="text-sm leading-relaxed">{message.text}</p>
+                    <div className="text-sm leading-relaxed">{renderMarkdown(message.text)}</div>
                     {message.citations && message.citations.length > 0 && (
                       <div className="mt-2 pt-2 border-t border-slate-200">
                         <p className="text-xs text-slate-600 mb-1">Sources:</p>

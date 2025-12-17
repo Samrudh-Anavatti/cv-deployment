@@ -258,7 +258,7 @@ export function RAGDiagram() {
                             <p className="text-center">Contextual Response</p>
                             <p className="text-xs text-slate-600 text-center mt-2">
                               "I have over 8 years of experience in full-stack development, currently working as
-                              a Senior Full Stack Developer at TechCorp Industries..."
+                              a Senior Full Stack Developer at Phoenix Solutions..."
                             </p>
                           </div>
                         </div>
