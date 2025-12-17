@@ -7,16 +7,14 @@ export function Hero() {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   const techLogos = [
-    { name: 'React', icon: '⚛️', color: 'from-cyan-400 to-cyan-600', delay: 0 },
-    { name: 'TypeScript', icon: 'TS', color: 'from-blue-400 to-blue-600', delay: 0.1 },
-    { name: 'Node.js', icon: '◆', color: 'from-green-400 to-green-600', delay: 0.2 },
-    { name: 'Python', icon: '🐍', color: 'from-yellow-400 to-yellow-600', delay: 0.3 },
-    { name: 'AWS', icon: '☁️', color: 'from-orange-400 to-orange-600', delay: 0.4 },
-    { name: 'Docker', icon: '🐳', color: 'from-blue-400 to-blue-600', delay: 0.5 },
-    { name: 'GraphQL', icon: 'GQL', color: 'from-pink-400 to-pink-600', delay: 0.6 },
-    { name: 'Next.js', icon: '▲', color: 'from-slate-600 to-slate-800', delay: 0.7 },
-    { name: 'Tailwind', icon: '🎨', color: 'from-teal-400 to-teal-600', delay: 0.8 },
-    { name: 'PostgreSQL', icon: '🐘', color: 'from-indigo-400 to-indigo-600', delay: 0.9 },
+    { name: 'Python', icon: '🐍', color: 'from-yellow-400 to-yellow-600', delay: 0 },
+    { name: 'LangChain', icon: '🦜', color: 'from-green-400 to-green-600', delay: 0.1 },
+    { name: 'AWS', icon: '☁️', color: 'from-orange-400 to-orange-600', delay: 0.2 },
+    { name: 'Azure', icon: '⚡', color: 'from-blue-400 to-blue-600', delay: 0.3 },
+    { name: 'Docker', icon: '🐳', color: 'from-blue-500 to-blue-700', delay: 0.4 },
+    { name: 'Kubernetes', icon: '☸️', color: 'from-indigo-400 to-indigo-600', delay: 0.5 },
+    { name: 'Terraform', icon: '🔧', color: 'from-purple-400 to-purple-600', delay: 0.6 },
+    { name: 'Power BI', icon: '📊', color: 'from-yellow-500 to-yellow-700', delay: 0.7 },
   ];
 
   return (
@@ -115,7 +113,7 @@ export function Hero() {
             transition={{ delay: 0.3, duration: 0.8 }}
             className="text-slate-700"
           >
-            Software Engineer & AI/ML Enthusiast
+            AI Engineer
           </motion.p>
         </motion.div>
 
@@ -133,18 +131,18 @@ export function Hero() {
                   About Me
                 </h2>
                 <p className="text-slate-700 mb-6">
-                  I'm a passionate software engineer with expertise in full-stack development, cloud technologies,
-                  and artificial intelligence. With a background in Renewable Energy Systems from ANU, I bring a
-                  unique perspective to building scalable applications and intelligent systems.
+                  I'm an AI engineer with experience in data engineering, business intelligence, and platform engineering on AWS and Azure.
+                  I graduated in Engineering, majoring in Renewable Energy Systems from the Australian National University (ANU),
+                  and have since designed and deployed scalable applications in production.
                 </p>
                 <p className="text-slate-700 mb-6">
-                  With experience at leading consulting firms like Deloitte, I've delivered impactful solutions
-                  across various domains including data analytics, automation, and enterprise applications. I'm
-                  particularly interested in RAG systems, LLMs, and cloud-native architectures.
+                  As a consultant at Deloitte, I've delivered solutions across the full data pipeline in
+                  government, health, banking and insurance. During this time, I developed strong advisory skills and core consulting
+                  capabilities. I've now shifted focus to building AI applications in a more software engineering capacity, primarily coding in Python using
+                  LangChain and LangGraph.
                 </p>
                 <p className="text-slate-700">
-                  When I'm not coding, you'll find me exploring the latest in AI/ML, contributing to innovative
-                  projects, or learning new technologies to stay at the cutting edge of software development.
+                  When I'm not coding, you'll find me cheering on AC Milan, playing competitive table tennis, and obsessing over new AI tools.
                 </p>
               </div>
             </div>

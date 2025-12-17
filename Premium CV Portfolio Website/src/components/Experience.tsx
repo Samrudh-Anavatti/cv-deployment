@@ -13,55 +13,55 @@ export function Experience() {
       title: 'Air-Gapped Agentic RAG System',
       company: 'Phoenix Solutions (Department of Defence)',
       description:
-        'Designed and deployed a multi-pipeline agentic RAG system with specialized React Agents for query understanding, retrieval, and critique-generation. Built with microservice Docker architecture using Ollama as inference engine, orchestrated via LangChain and LangGraph for secure production use in air-gapped environments.',
-      tech: ['LangGraph', 'LangChain', 'Docker', 'Ollama', 'React Agents', 'Microservices'],
-      impact: 'Production deployment in secure environment',
+        'A multi-pipeline agentic RAG system. Built with microservice Docker architecture using Ollama as inference engine, and open source infrastructure.',
+      tech: ['LangGraph', 'Docker', 'Ollama', 'Qdrant', 'RabbitMQ', 'FastAPI', 'PostgreSQL', 'Minio', 'Keycloak'],
+      impact: 'Air-gapped agentic RAG system',
     },
     {
       title: 'AWS Cloud-Native RAG Platform',
       company: 'Phoenix Solutions (Department of Defence)',
       description:
-        'Built enterprise RAG system on AWS infrastructure centered around Bedrock for LLM inference. Implemented infrastructure-as-code using Terraform, with comprehensive CI/CD pipelines, automated testing, and DevSecOps controls for cloud networking, access control, and authentication.',
-      tech: ['AWS Bedrock', 'Terraform', 'CI/CD', 'Python', 'DevSecOps'],
-      impact: 'Scalable cloud-native AI platform',
+        'An enterprise RAG system on AWS infrastructure centered around Bedrock',
+      tech: ['AWS Bedrock', 'Terraform', 'S3', 'Elastic Beanstalk', 'IAM', 'Amazon Cognito',],
+      impact: 'Scalable AWS-native RAG system',
     },
     {
       title: 'Azure Kubernetes RAG Architecture',
       company: 'Phoenix Solutions (Department of Defence)',
       description:
-        'Architected Azure-based RAG system with Ollama deployed on Kubernetes for model inference. Leveraged Azure services for storage, compute, and application layer, with Bicep templates for infrastructure automation and container orchestration at scale.',
-      tech: ['Azure', 'Kubernetes', 'Ollama', 'Bicep', 'Docker', 'Azure Services'],
-      impact: 'Enterprise-grade containerized AI system',
+        'Azure-based RAG system with Ollama deployed on Kubernetes for inference and embedding.',
+      tech: ['Azure', 'Kubernetes', 'Blob Storage', 'Bicep Templates', 'Cosmos DB', 'Entra ID', 'Azure Functions'],
+      impact: 'Scalable Azure-native RAG system',
     },
     {
       title: 'Automated Quarterly Report Generation',
       company: 'Phoenix Solutions (Department of Defence)',
       description:
-        'Developed an intelligent document automation system that ingests 6 data sources and generates fully formatted 50-page quarterly performance reports. Implemented multi-agent processing pipeline with routing, data analysis, and statistical computation capabilities, producing editable Word documents with LLM-driven insights.',
-      tech: ['LangChain', 'Python', 'Multi-Agent Systems', 'Data Analysis', 'NLP'],
+        'Developed an intelligent document automation system that ingests 6 data sources and generates fully formatted 50-page quarterly performance reports, using a multi-agent processing pipeline with data analysis and statistical computation capabilities.',
+      tech: ['LangChain', 'Ollama', 'Data Analysis Agent', 'NLP', 'Automated Docx creation'],
       impact: 'Automated 50-page report generation',
     },
     {
-      title: 'NAB Business Banking Analytics Platform',
+      title: 'National Australia Bank Analytics Platform',
       company: 'Deloitte',
       description:
-        'Delivered comprehensive BI and data engineering solution for National Australia Bank Business and Private Banking division. Built 6 Power BI dashboards, 13 Microsoft Fabric pipelines, and a business-approved data model supporting sales, revenue, lead performance, and risk reporting.',
-      tech: ['Power BI', 'Microsoft Fabric', 'Data Modeling', 'ETL', 'SQL'],
+        'Delivered comprehensive BI and data engineering solution for NAB Business and Private Banking division. Built 6 Power BI dashboards, 13 Microsoft Fabric pipelines, and a business-approved data model supporting sales, revenue, lead performance, and risk reporting.',
+      tech: ['Power BI', 'Fabric Data Factory', 'Data Modeling', 'ETL', 'SQL'],
       impact: 'Branch reports viewed 400+ times',
     },
     {
-      title: 'QIC Data Governance Framework',
+      title: 'Queensland Investment Corporation Data Governance Framework',
       company: 'Deloitte',
       description:
-        'Led data governance and management advisory for Queensland Investment Corporation. Identified 30+ critical data risks across private equity, debt, infrastructure, and natural capital portfolios. Created comprehensive register of 400+ data assets to establish stewardship responsibility and improve data visibility.',
+        'Identified 30+ critical data risks across private equity, debt, infrastructure, and natural capital portfolios. Created comprehensive register of 400+ data assets to establish stewardship responsibility and improve data visibility.',
       tech: ['Data Governance', 'Risk Management', 'Asset Management', 'Strategy'],
       impact: '400+ data assets catalogued, 30+ risks identified',
     },
     {
-      title: 'Azure Migration Tool with Gen AI',
+      title: 'Azure-based Data Migration Tool',
       company: 'Deloitte',
       description:
-        'Core build team member for internal Microsoft Azure data migration asset that generated $1M+ AUD in client sales. Integrated Azure AI Foundry to automate metadata collection and file transformation, reducing manual effort by 100+ hours per large migration through intelligent metadata population.',
+        'Build team member for Deloitte internal Microsoft Azure data migration asset that generated $1M+ AUD in client sales. Integrated Azure AI Foundry to automate metadata collection and file transformation, reducing manual effort by 100+ hours per large migration',
       tech: ['Azure AI Foundry', 'Gen AI', 'Azure', 'Automation', 'Data Migration'],
       impact: '$1M+ sales, 100+ hours saved per migration',
     },
@@ -69,7 +69,7 @@ export function Experience() {
       title: 'Comcare Salesforce Governance Strategy',
       company: 'Deloitte',
       description:
-        'Developed comprehensive governance plan and data quality framework for Australian WHS Insurance (Comcare) supporting a $50M AUD Salesforce implementation. Designed strategy to ensure data integrity and compliance for Australia\'s primary government insurance agency.',
+        'Developed comprehensive governance plan and data quality framework for Australian WHS Insurance (Comcare) supporting a $50M AUD Salesforce implementation.',
       tech: ['Salesforce', 'Data Governance', 'Strategy', 'Data Quality'],
       impact: '$50M implementation governance',
     },
