@@ -234,7 +234,7 @@ export function SamBot({ sessionId, backendUrl }: SamBotProps) {
           </h2>
           <div className="w-20 h-1 mx-auto bg-gradient-to-r from-sage-500 to-skyblue-600 rounded-full mb-4" />
           <p className="text-slate-600 mb-6">
-            Ask me anything about Samrudh's experience, skills, or projects
+            I'm trained to answer questions about Samrudh's experience, skills, or projects, but you can ask anything! Try uploading your own documents as well.
           </p>
           <RAGDiagram />
         </motion.div>
