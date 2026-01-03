@@ -1,8 +1,8 @@
 param(
-    [string]$ResourceGroup = "rg-zaralm-personal",
-    [string]$Location = "westeurope",
-    [string]$AppName = "zaralmpersonal",
-    [string]$Environment = "dev"
+    [string]$ResourceGroup,
+    [string]$Location,
+    [string]$AppName,
+    [string]$Environment
 )
 
 $ErrorActionPreference = "Stop"
@@ -25,11 +25,11 @@ Get-Content $configFile | ForEach-Object {
     }
 }
 
-# Override with script parameters if provided
-if ($ResourceGroup) { $config['RESOURCE_GROUP'] = $ResourceGroup }
-if ($Location) { $config['LOCATION'] = $Location }
-if ($AppName) { $config['APP_NAME'] = $AppName }
-if ($Environment) { $config['ENVIRONMENT'] = $Environment }
+# Override with script parameters if provided (only if explicitly passed)
+if ($PSBoundParameters.ContainsKey('ResourceGroup')) { $config['RESOURCE_GROUP'] = $ResourceGroup }
+if ($PSBoundParameters.ContainsKey('Location')) { $config['LOCATION'] = $Location }
+if ($PSBoundParameters.ContainsKey('AppName')) { $config['APP_NAME'] = $AppName }
+if ($PSBoundParameters.ContainsKey('Environment')) { $config['ENVIRONMENT'] = $Environment }
 
 $aiEndpoint = $config['AZURE_OPENAI_ENDPOINT']
 $aiKey = $config['AZURE_OPENAI_KEY']
@@ -57,15 +57,7 @@ Write-Host "=== STEP 2: Deploy Infrastructure ===" -ForegroundColor Green
 
 # Check if Function App already exists
 $functionAppName = "$AppName-func-$Environment"
-$existingApp = $null
-try {
-    $existingApp = az functionapp show --name $functionAppName --resource-group $ResourceGroup 2>&1 | ConvertFrom-Json
-    if ($existingApp.error) {
-        $existingApp = $null
-    }
-} catch {
-    $existingApp = $null
-}
+$existingApp = az functionapp list --resource-group $ResourceGroup --query "[?name=='$functionAppName'].name" -o tsv
 
 if ($existingApp) {
     Write-Host "Function App '$functionAppName' already exists. Skipping infrastructure deployment." -ForegroundColor Yellow
@@ -138,7 +130,7 @@ Pop-Location
 # Deploy Frontend
 Write-Host ""
 Write-Host "=== STEP 5: Deploy Frontend ===" -ForegroundColor Green
-Push-Location "../Premium CV Portfolio Website"
+Push-Location "../frontend"
 
 # Create .env for build
 $envContent = @"

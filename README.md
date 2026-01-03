@@ -1,47 +1,56 @@
-# Samrudh Anavatti - Personal Website with SamBot
+# Personal CV Website with RAG-Powered Chatbot
+Personal CV Website with in built RAG. Frontend designed on Figma, all infrastrcutre hosted on Azure
 
-A modern personal website featuring an AI-powered RAG chatbot (SamBot) that can answer questions about my professional background, skills, and experience.
+## Architecture
 
-## 🌟 Features
+### Frontend
+- **Framework**: React 18 with TypeScript
+- **Build Tool**: Vite
+- **Styling**: Vanilla CSS with Tailwind-inspired utilities
+- **Animations**: Framer Motion
+- **Hosting**: Azure Static Web Apps
 
-- **Hero Section**: Professional introduction with contact details and career highlights
-- **Tech Showcase**: Animated display of technologies and skills
-- **SamBot**: RAG-powered AI chatbot for interactive Q&A about my background
-- **Admin Panel**: Secure document management for RAG knowledge base
-- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile
+### Backend
+- **Runtime**: Azure Functions (Python 3.11)
+- **AI Model**: Azure OpenAI (GPT-4o)
+- **Vector Database**: Azure AI Search
+- **Document Storage**: Azure Blob Storage
+- **Framework**: LangChain for RAG orchestration
 
-## 🏗️ Architecture
+### RAG Pipeline
+1. **Document Processing**: PDFs and text files uploaded via frontend
+2. **Embedding**: Azure OpenAI text-embedding-ada-002
+3. **Vector Storage**: Azure AI Search with hybrid search capabilities
+4. **Retrieval**: Semantic search with configurable top-k results
+5. **Generation**: GPT-4o with retrieved context for grounded responses
 
-- **Frontend**: React + TypeScript + Vite
-- **Backend**: Azure Functions (Python)
-- **AI**: Azure OpenAI Service (GPT + Embeddings)
-- **Vector Store**: Azure AI Search
-- **Storage**: Azure Blob Storage
-
-## 🚀 Local Development
+## Local Development
 
 ### Prerequisites
-
-- Node.js 16+
-- Python 3.10+
-- Azure subscription (for backend services)
+- Node.js 18+
+- Python 3.11+
+- Azure CLI
+- Azure subscription with:
+  - Azure OpenAI Service
+  - Azure AI Search
+  - Azure Storage Account
+  - Azure Functions
 
 ### Frontend Setup
 
 ```bash
-cd src/frontend
+cd frontend
 npm install
 cp .env.example .env
-# Edit .env with your backend URL
+# Configure VITE_BACKEND_URL in .env
 npm run dev
 ```
 
-The frontend will be available at `http://localhost:5173`
+Frontend runs on `http://localhost:3000`
 
 ### Backend Setup
 
-1. Create Azure resources (see deployment section)
-2. Configure environment variables in `src/backend/local.settings.json`:
+1. Create `src/backend/local.settings.json`:
 
 ```json
 {
@@ -49,126 +58,193 @@ The frontend will be available at `http://localhost:5173`
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "python",
-    "AZURE_OPENAI_ENDPOINT": "your-endpoint",
-    "AZURE_OPENAI_API_KEY": "your-key",
-    "AZURE_OPENAI_API_VERSION": "2024-02-01",
-    "AZURE_SEARCH_ENDPOINT": "your-search-endpoint",
-    "AZURE_SEARCH_KEY": "your-search-key",
-    "AZURE_STORAGE_CONNECTION_STRING": "your-connection-string",
-    "AZURE_STORAGE_CONTAINER_NAME": "documents"
+    "AZURE_OPENAI_ENDPOINT": "https://your-resource.openai.azure.com/",
+    "AZURE_OPENAI_KEY": "your-key",
+    "AZURE_SEARCH_ENDPOINT": "https://your-search.search.windows.net",
+    "AZURE_SEARCH_KEY": "your-key",
+    "AZURE_STORAGE_CONNECTION_STRING": "your-connection-string"
   }
 }
 ```
 
-3. Run the backend:
+2. Install dependencies and run:
 
 ```bash
 cd src/backend
 python -m venv .venv
-.venv\Scripts\activate  # Windows
+source .venv/bin/activate  # or .venv\\Scripts\\activate on Windows
 pip install -r requirements.txt
 func start
 ```
 
-## 📝 Updating Content
+Backend runs on `http://localhost:7071`
 
-### Profile Information
+## Deployment
 
-Edit `src/frontend/src/data/profile.json` to update:
-- Name, title, location
-- Contact information
-- Professional summary
-- Technologies/skills
-- Career highlights
+### Automated Deployment
 
-### SamBot Knowledge Base
+The project includes a PowerShell deployment script that handles infrastructure provisioning and deployment:
 
-1. Access admin panel:
-   - Press `Ctrl+Shift+A` on the website
-   - Or navigate to `/admin`
-   - Enter password (default: `admin123`)
+```powershell
+cd scripts
+# Configure config.env with your Azure credentials
+.\deploy-simple.ps1
+```
 
-2. Upload documents (PDF, TXT, DOC)
-3. Click "Embed" to process documents for RAG
-4. SamBot will use these documents to answer questions
+The script will:
+1. Create Azure resource group
+2. Deploy infrastructure via Bicep templates
+3. Deploy backend Function App
+4. Build and deploy frontend to Static Web Apps
+5. Index initial CV document
 
-## 🔐 Admin Panel
+### Manual Deployment
 
-The admin panel is password-protected and accessible via:
-- Keyboard shortcut: `Ctrl+Shift+A`
-- URL: `/admin`
-- Small settings icon (bottom-right corner)
-
-Default password: `admin123` (change in `.env`)
-
-## 🌐 Azure Deployment
-
-### Backend Deployment
-
+#### Backend
 ```bash
 cd src/backend
-func azure functionapp publish <your-function-app-name>
+func azure functionapp publish <function-app-name>
 ```
 
-### Frontend Deployment
-
+#### Frontend
 ```bash
-cd src/frontend
+cd frontend
 npm run build
-# Upload dist/ folder to Azure Static Web Apps or Storage Static Website
+# Upload build/ directory to Azure Static Web Apps or Blob Storage
 ```
 
-See the original [deployment guide](README_DEPLOYMENT.md) for detailed Azure setup instructions.
+## Project Structure
 
-## 🎨 Customization
+```
+├── frontend/                 # React frontend application
+│   ├── src/
+│   │   ├── components/      # React components
+│   │   │   ├── Hero.tsx
+│   │   │   ├── SamBot.tsx   # RAG chatbot interface
+│   │   │   ├── RAGDiagram.tsx
+│   │   │   └── ...
+│   │   └── main.tsx
+│   └── public/
+│       └── images/          # Static assets
+├── src/
+│   └── backend/             # Azure Functions backend
+│       ├── function_app.py  # Main function definitions
+│       ├── requirements.txt
+│       └── ...
+├── infra/                   # Infrastructure as Code
+│   └── simple-main.bicep    # Azure resource definitions
+└── scripts/
+    ├── deploy-simple.ps1    # Deployment automation
+    └── config.env           # Deployment configuration
+```
 
-### Colors & Theme
+## API Endpoints
 
-Edit CSS variables in `src/frontend/src/index.css`:
+### POST /api/generate
+Generate AI responses with optional RAG retrieval.
 
-```css
-:root {
-  --primary: #3b82f6;
-  --secondary: #8b5cf6;
-  --background: #0f172a;
-  /* ... */
+**Request:**
+```json
+{
+  "prompt": "Tell me about your experience",
+  "enableRag": true,
+  "sessionId": "unique-session-id"
 }
 ```
 
-### SamBot Personality
-
-Edit the system prompt in `src/backend/function_app.py`:
-
-```python
-system_message = """You are SamBot, an AI assistant..."""
+**Response:**
+```json
+{
+  "response": "AI generated response...",
+  "citations": ["document1.pdf", "document2.pdf"]
+}
 ```
 
-## 📦 Tech Stack
+### POST /api/documents/upload
+Upload documents for RAG knowledge base.
+
+**Request:** multipart/form-data with file
+
+**Response:**
+```json
+{
+  "filename": "uploaded-file.pdf",
+  "url": "https://storage.../uploaded-file.pdf"
+}
+```
+
+### POST /api/embed
+Embed uploaded documents into vector database.
+
+**Request:**
+```json
+{
+  "fileName": "document.pdf",
+  "sessionId": "unique-session-id",
+  "documentType": "temporary"
+}
+```
+
+**Response:**
+```json
+{
+  "chunks": 15,
+  "message": "Document embedded successfully"
+}
+```
+
+## Configuration
+
+### Environment Variables
+
+**Frontend (.env):**
+```
+VITE_BACKEND_URL=https://your-function-app.azurewebsites.net
+```
+
+**Backend (local.settings.json or Azure App Settings):**
+```
+AZURE_OPENAI_ENDPOINT=<your-endpoint>
+AZURE_OPENAI_KEY=<your-key>
+AZURE_SEARCH_ENDPOINT=<your-endpoint>
+AZURE_SEARCH_KEY=<your-key>
+AZURE_STORAGE_CONNECTION_STRING=<your-connection-string>
+```
+
+## Tech Stack
 
 **Frontend:**
 - React 18
 - TypeScript
 - Vite
-- Framer Motion (animations)
-- React Markdown
+- Framer Motion
+- Lucide React (icons)
 
 **Backend:**
-- Azure Functions
-- Python 3.10
+- Azure Functions (Python)
 - LangChain
-- Azure OpenAI
+- Azure OpenAI SDK
+- Azure AI Search SDK
+- Pydantic (data validation)
+
+**Infrastructure:**
+- Azure Static Web Apps
+- Azure Functions
+- Azure OpenAI Service
 - Azure AI Search
+- Azure Blob Storage
 
-## 📄 License
+## Development Notes
 
-Personal project - All rights reserved
+- Frontend uses Vite's dev server with HMR
+- Backend uses Azure Functions Core Tools for local development
+- RAG pipeline uses hybrid search (vector + keyword)
+- Session isolation via unique session IDs
+- Document cleanup endpoint prevents duplicate embeddings
 
-## 🤝 Contact
+
+## Contact
 
 - Email: samrudh.anavatti@gmail.com
 - LinkedIn: [linkedin.com/in/samrudh-anavatti](https://linkedin.com/in/samrudh-anavatti)
-- Website: https://your-domain.dev
-
----
-
-**Built with ❤️ using React, Azure Functions, and AI**
+- GitHub: [github.com/samrudh-anavatti](https://github.com/samrudh-anavatti)
